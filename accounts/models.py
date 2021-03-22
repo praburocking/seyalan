@@ -47,9 +47,8 @@ class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
     username=models.CharField(null=False,max_length=255)
     created_time=models.DateTimeField(null=False,auto_now_add=True)
     modified_time=models.DateTimeField(null=False,auto_now=True)
-    user_image=models.ImageField(null=True,storage=storage)
+    user_image=models.ImageField(null=True,storage=storage,blank=True)
     active = models.BooleanField(default=True)
-    reporting_to=models.ForeignKey('self', on_delete=models.SET_NULL,blank=True,related_name="reporters",null=True)
     other_info=models.TextField(null=True)
 
 
@@ -104,14 +103,17 @@ class Org(models.Model):
     )
     id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
     orgtype=models.TextField(max_length=1, choices=ORG_TYPE, default="1")
-    members = models.ManyToManyField(User, through='OrgMembers',)
+    members = models.ManyToManyField(User, through='OrgMembers',through_fields=('org', 'user'))
     created_time=models.DateTimeField(null=False,auto_now_add=True)
     modified_time=models.DateTimeField(null=False,auto_now=True)
-    name=models.TextField(max_length=250)
+    name=models.CharField(max_length=250)
     #created_by=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     #super_Admin=models.ForeignKey(mo)
    # license=
     #address=
+
+    def __str__ (self):
+        return self.name
 
 
 class OrgMembers(models.Model):
@@ -127,7 +129,10 @@ class OrgMembers(models.Model):
     created_time=models.DateTimeField(auto_now_add=True)
     modified_time=models.DateTimeField(auto_now=True)
     invited_time=models.DateTimeField(null=True)
+    reporting_to=models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,related_name="reporters",null=True)
+
     class Meta:
         constraints = [
                     UniqueConstraint(fields=['user','org'], name='unique_user_per_org')
+                    
         ]

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import UserSerializer,UserUpdateSerializer
+from .serializers import UserSerializer,UserUpdateSerializer,OrgSerializer
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from knox.models import AuthToken
 from knox.auth import TokenAuthentication
-from .models import User
+from .models import User,Org,OrgMembers
 from django.http.response import HttpResponse
 from django.core.files import File
 from .email import user_mail
@@ -200,3 +200,13 @@ class forgotPassword(APIView):
             sendConfirm(user,'P_R')
             return Response(data={"details":"recovery mail is sent to the registered mail"},status=HTTPStatus.ACCEPTED)
 
+class orgView(APIView):
+    def get(self,request):
+        if(request.user.is_authenticated):
+            queryset=Org.objects.all()
+            serializer=OrgSerializer(queryset,many=True)
+            return Response(data=serializer.data)
+        else:
+            return Response(data={"details":"invalid data"})
+
+            
