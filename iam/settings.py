@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-
+    'sequences',
     'knox',
     'django.contrib.sites',
     'django_s3_storage',

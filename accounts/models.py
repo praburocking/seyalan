@@ -7,7 +7,11 @@ import uuid
 import guardian
 from guardian.mixins import GuardianUserMixin
 from django.contrib.auth.models import PermissionsMixin
+from sequences import get_last_value,get_next_value,create_org_space
 storage = S3Storage(aws_s3_bucket_name='filesec-userimage')
+
+
+
 
 # Create your models here.
 
@@ -41,7 +45,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
 
-    id=models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
+    id=models.UUIDField(primary_key = True, editable = False)
     email=models.EmailField(unique=True,max_length=255)
     verified=models.BooleanField(null=False,default=False)
     username=models.CharField(null=False,max_length=255)
@@ -101,19 +105,21 @@ class Org(models.Model):
     ORG_TYPE = (
         ('1', 'WORK_FLOW_MACHIN'),
     )
-    id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+    id=models.IntegerField(primary_key=True,default=get_last_value('_org_id_'),editable=False)
     orgtype=models.TextField(max_length=1, choices=ORG_TYPE, default="1")
     members = models.ManyToManyField(User, through='OrgMembers',through_fields=('org', 'user'))
     created_time=models.DateTimeField(null=False,auto_now_add=True)
     modified_time=models.DateTimeField(null=False,auto_now=True)
     name=models.CharField(max_length=250)
-    #created_by=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
-    #super_Admin=models.ForeignKey(mo)
-   # license=
-    #address=
 
+        
     def __str__ (self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        super(Org, self).save(*args, **kwargs)
+        
+        
 
 
 class OrgMembers(models.Model):
