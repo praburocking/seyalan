@@ -128,9 +128,10 @@ class OrgMembers(models.Model):
         ('2','DATA_ADMIN'),
         ('3','STD')
     )
-
+   
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     org = models.ForeignKey(Org, on_delete=models.CASCADE)
+    id=models.BigIntegerField(primary_key=True,default=get_last_value(org.id))
     profile=models.CharField(max_length=5,choices=PROFILE)
     created_time=models.DateTimeField(auto_now_add=True)
     modified_time=models.DateTimeField(auto_now=True)
@@ -139,6 +140,5 @@ class OrgMembers(models.Model):
 
     class Meta:
         constraints = [
-                    UniqueConstraint(fields=['user','org'], name='unique_user_per_org')
-                    
+                    UniqueConstraint(fields=['user','org'], name='unique_user_per_org')           
         ]
