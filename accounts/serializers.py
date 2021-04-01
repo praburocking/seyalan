@@ -1,17 +1,23 @@
-from .models import User,Org
+from .models import User,Org,OrgMembers
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from userVerification.Confirm import sendConfirm
 
 
 
-class reporterSerializer(serializers.ModelSerializer):
+class ReporterSerializer(serializers.ModelSerializer):
     id=serializers.UUIDField(read_only=True)
     email = serializers.EmailField( required=True,validators=[UniqueValidator(queryset=User.objects.all())])
     username = serializers.CharField(min_length=4)
     class Meta:
         model=User
         fields=('id','username','email')
+        
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=OrgMembers
+        #fields=['id','profile','created_time','modified_time','invited_time','org','user']
+        fields=['id']
 
 class UserSerializer(serializers.ModelSerializer):
     id=serializers.UUIDField(read_only=True)
@@ -25,7 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(email=validated_data['email'], password=validated_data['password'],username=validated_data['username'])
-        sendConfirm(user,'U_V')
+        #sendConfirm(user,'U_V')
         return user
 
     def update(self, instance, validated_data):
@@ -45,13 +51,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class OrgSerializer(serializers.ModelSerializer):
     id=serializers.CharField(read_only=True)
     orgtype=serializers.CharField(read_only=True)
-    #members=reporterSerializer(many=True)
+    members=MemberSerializer(many=True)
     created_time=serializers.DateTimeField(read_only=True)
     #name=serializers.CharField(min_length=5)
     modified_time=serializers.DateTimeField(read_only=True)
-    
+    name=serializers.CharField(required=True)
     class Meta:
-        fields=['id','orgtype','created_time','modified_time','name']
+        fields=['id','orgtype','created_time','modified_time','name','members']
         model=Org
 
 

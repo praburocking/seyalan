@@ -22,5 +22,5 @@ class Sequence(models.Model):
             repr(self.name), repr(self.last))
 
 class Org_Space(models.Model):
-    id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name=_("id"),)
+    id=models.BigIntegerField(primary_key=True,editable=False, verbose_name=_("id"),)
     org_space=models.BigIntegerField(editable=False,unique=True,verbose_name=_("org space"))

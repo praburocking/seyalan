@@ -36,6 +36,7 @@ AUTH_USER_MODEL = 'accounts.User'
 
 INSTALLED_APPS = [
     "sslserver",
+     'sequences',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'sequences',
+   
     'knox',
     'django.contrib.sites',
     'django_s3_storage',

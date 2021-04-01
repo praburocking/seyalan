@@ -31,6 +31,39 @@ logger.setLevel(logging.INFO)
 
 # Create your views here.
 
+
+class OrgView(APIView):
+      permission_classes = [IsAuthenticated]
+      authentication_classes = [TokenAuthentication]
+      def get(self,request):
+        if(request.user.is_authenticated):
+            queryset=Org.objects.filter(members__id=request.user.id)
+            serializer=OrgSerializer(queryset,many=True)
+            return Response(data=serializer.data)
+        else:
+            return Response(data={"details":"invalid data"})
+
+
+
+      def post(self,request,format='json'):
+        if request.user.is_authenticated:
+            data=request.data
+            data["members"]=[{'id':request.user.id}]
+            org_serializer=OrgSerializer(data=data)
+            if org_serializer.is_valid(raise_exception=True):
+                 org=org_serializer.save()
+                 if org:
+                    return Response(data=org_serializer.data,status=status.HTTP_201_CREATED)
+                 else:
+                    return Response(data={"detail": "exception in creating the org kindly try again latter"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data={"detail": "no user found"}, status=status.HTTP_400_BAD_REQUEST)
+          
+    
+
+
+
+
 class createUser(APIView):
 
     authentication_classes = [BasicAuthentication]
@@ -45,11 +78,12 @@ class createUser(APIView):
             # print(stripe_customer)
             # logger.info("license serialiser data ==> %s",licenSerializer.data)
             # logger.info("type of the data %s",type(licenSerializer.data))
-            # newLicenseData={"stripe_customer_id":stripe_customer.stripe_customer_id}#licenSerializer.data["stripe_customer_id=stripe_customer.stripe_customer_id
+            newLicenseData={}
+             #{"stripe_customer_id":stripe_customer.stripe_customer_id}#licenSerializer.data["stripe_customer_id=stripe_customer.stripe_customer_id
             # newLicenseData.update(licenSerializer.data)
             if user:
-                ue=user_mail(user.email)
-                ue.welcome_email(user.username)
+                #ue=user_mail(user.email)
+                #ue.welcome_email(user.username)
                 return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1], "license": newLicenseData},
                                 status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -200,13 +234,13 @@ class forgotPassword(APIView):
             sendConfirm(user,'P_R')
             return Response(data={"details":"recovery mail is sent to the registered mail"},status=HTTPStatus.ACCEPTED)
 
-class orgView(APIView):
-    def get(self,request):
-        if(request.user.is_authenticated):
-            queryset=Org.objects.all()
-            serializer=OrgSerializer(queryset,many=True)
-            return Response(data=serializer.data)
-        else:
-            return Response(data={"details":"invalid data"})
+# class orgView(APIView):
+#     def get(self,request):
+#         if(request.user.is_authenticated):
+#             queryset=Org.objects.all()
+#             serializer=OrgSerializer(queryset,many=True)
+#             return Response(data=serializer.data)
+#         else:
+#             return Response(data={"details":"invalid data"})
 
             

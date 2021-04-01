@@ -60,7 +60,7 @@ def get_last_value(
 
 
 
-def get_range(
+def get_space(
     sequence_name='default',
     *,
     using=None
@@ -69,6 +69,7 @@ def get_range(
     Return the last value for a given sequence.
 
     """
+    print(sequence_name)
     # Inner import because models cannot be imported before their application.
     from .models import Org_Space
 
@@ -84,10 +85,14 @@ def get_range(
             [sequence_name]
         )
         result = cursor.fetchone()
-
+    if result is None:
+       return get_next_value(sequence_name,initial_value=int(str(get_next_value('_org_space_'))+"000000000000"))
     return None if result is None else result[0]
 
 
+def get_range(sequence_name='default',*,using=None):
+    space=get_space(sequence_name,using=using)
+    return [int(str(space)+"000000000000"),int(str(space)+"999999999999")]
 
 
 def get_next_value(
@@ -102,6 +107,7 @@ def get_next_value(
     Return the next value for a given sequence.
 
     """
+    print("sequence ==>"+str(sequence_name)+" intialValue ==>"+str(initial_value))
     # Inner import because models cannot be imported before their application.
     from .models import Sequence
 
@@ -179,8 +185,9 @@ def get_next_value(
 
 def create_org_space(using=None,nowait=False):
         from .models import Org_Space
-        org_space=get_next_value('_org_id_',1111111,None,nowait=nowait,using=using)
-        org_obj=Org_Space.objects.create(org_space=org_space)
+        org_id=get_next_value('_org_id_',initial_value=111111111,reset_value=None,nowait=nowait,using=using)
+        org_space=get_next_value('_org_space_',initial_value=1111111)
+        org_obj=Org_Space.objects.create(org_space=org_space,id=org_id)
         return org_obj.id
 
 
@@ -236,8 +243,8 @@ class Sequence:
         )
 
 
-    def get_range(self,):
-        return get_range(self.sequence_name,using=self.using) 
+    def get_space(self,):
+        return get_space(self.sequence_name,using=self.using) 
     def __iter__(self):
         return self
 

@@ -7,7 +7,7 @@ import uuid
 import guardian
 from guardian.mixins import GuardianUserMixin
 from django.contrib.auth.models import PermissionsMixin
-from sequences import get_last_value,get_next_value,create_org_space
+from sequences import get_last_value,get_next_value,create_org_space,get_space
 storage = S3Storage(aws_s3_bucket_name='filesec-userimage')
 
 
@@ -23,6 +23,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Password field is needed')
         if not username:
             username=email.split('@')[0]
+        
         user = self.model(email=self.normalize_email(email),username=username,**kargs)
         user.set_password(password)
         user.save(using=self._db)
@@ -45,7 +46,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
 
-    id=models.UUIDField(primary_key = True, editable = False)
+    id=models.BigIntegerField(primary_key=True,editable=False)
     email=models.EmailField(unique=True,max_length=255)
     verified=models.BooleanField(null=False,default=False)
     username=models.CharField(null=False,max_length=255)
@@ -61,6 +62,12 @@ class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
     admin = models.BooleanField(default=False)  # a superuser
     is_superuser=models.BooleanField(default=False)
 
+
+    def save(self,*args,**kwargs):
+        if self.id is None:
+            user_id=get_next_value('_user_id_',initial_value=111111111)
+            self.id=user_id
+        super(User,self).save(*args,**kwargs)
 
     USERNAME_FIELD='email'
 
@@ -78,8 +85,6 @@ class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
     def get_short_name(self):
         return self.email
 
-    def __str__(self):  # __unicode__ on Python 2
-        return self.email
         
     @property
     def is_staff(self):
@@ -105,7 +110,7 @@ class Org(models.Model):
     ORG_TYPE = (
         ('1', 'WORK_FLOW_MACHIN'),
     )
-    id=models.IntegerField(primary_key=True,default=get_last_value('_org_id_'),editable=False)
+    id=models.BigIntegerField(primary_key=True,editable=False)
     orgtype=models.TextField(max_length=1, choices=ORG_TYPE, default="1")
     members = models.ManyToManyField(User, through='OrgMembers',through_fields=('org', 'user'))
     created_time=models.DateTimeField(null=False,auto_now_add=True)
@@ -117,6 +122,8 @@ class Org(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        if self.id is None:
+            self.id=create_org_space()
         super(Org, self).save(*args, **kwargs)
         
         
@@ -131,14 +138,23 @@ class OrgMembers(models.Model):
    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     org = models.ForeignKey(Org, on_delete=models.CASCADE)
-    id=models.BigIntegerField(primary_key=True,default=get_last_value(org.id))
+    id=models.BigIntegerField(primary_key=True,editable=False)
     profile=models.CharField(max_length=5,choices=PROFILE)
     created_time=models.DateTimeField(auto_now_add=True)
     modified_time=models.DateTimeField(auto_now=True)
-    invited_time=models.DateTimeField(null=True)
+    invited_time=models.DateTimeField(null=True,blank=True)
     reporting_to=models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,related_name="reporters",null=True)
 
     class Meta:
         constraints = [
                     UniqueConstraint(fields=['user','org'], name='unique_user_per_org')           
         ]
+    def save(self,*args,**kwargs):
+        if self.id is None:
+            print(self.org.id)
+            cur_range=get_space(self.org.id)
+
+            print(cur_range)
+            str_init=str(cur_range)+"000000000000"
+            self.id=get_next_value(self.org.id, initial_value=int(str_init))
+        super(OrgMembers,self).save(*args,**kwargs)
