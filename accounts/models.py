@@ -9,6 +9,7 @@ from guardian.mixins import GuardianUserMixin
 from django.contrib.auth.models import PermissionsMixin
 from sequences import get_last_value,get_next_value,create_org_space,get_space
 storage = S3Storage(aws_s3_bucket_name='filesec-userimage')
+from django_currentuser.middleware import (get_current_user, get_current_authenticated_user)
 
 
 
@@ -127,6 +128,7 @@ class Org(models.Model):
         super(Org, self).save(*args, **kwargs)
         
         
+        
 
 
 class OrgMembers(models.Model):
@@ -136,8 +138,8 @@ class OrgMembers(models.Model):
         ('3','STD')
     )
    
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    org = models.ForeignKey(Org, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='configured_orgs')
+    org = models.ForeignKey(Org, on_delete=models.CASCADE,related_name='configured_members')
     id=models.BigIntegerField(primary_key=True,editable=False)
     profile=models.CharField(max_length=5,choices=PROFILE)
     created_time=models.DateTimeField(auto_now_add=True)

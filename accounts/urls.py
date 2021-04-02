@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import createUser,loginView,accountsView,userExist,accountsImageView,passwordChange,forgotPassword,OrgView
+from .views import createUser,loginView,accountsView,userExist,accountsImageView,passwordChange,forgotPassword,OrgView,CurrentOrgView
 from knox import views as knox_views
 from userVerification import urls as mail_urls
 
@@ -15,5 +15,6 @@ urlpatterns=[
     path(r'logoutall', knox_views.LogoutAllView.as_view(), name='knox_logoutall'),
     path(r'forgotpassword',forgotPassword.as_view()),
     path(r'org',OrgView.as_view()),
+    path(r'org/<int:id>',CurrentOrgView.as_view()),
     path('verify/', include(mail_urls)),
 ]

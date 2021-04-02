@@ -30,6 +30,17 @@ logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logg
 logger.setLevel(logging.INFO)
 
 # Create your views here.
+class CurrentOrgView(APIView):
+      permission_classes = [IsAuthenticated]
+      authentication_classes = [TokenAuthentication]
+      def get(self,request,id):
+        if(request.user.is_authenticated):
+            queryset=Org.objects.filter(configured_members__user__id=request.user.id,id=id)
+            serializer=OrgSerializer(queryset,many=True)
+            return Response(data=serializer.data)
+        else:
+            return Response(data={"details":"invalid data"})
+
 
 
 class OrgView(APIView):
@@ -37,7 +48,7 @@ class OrgView(APIView):
       authentication_classes = [TokenAuthentication]
       def get(self,request):
         if(request.user.is_authenticated):
-            queryset=Org.objects.filter(members__id=request.user.id)
+            queryset=Org.objects.filter(configured_members__user__id=request.user.id)
             serializer=OrgSerializer(queryset,many=True)
             return Response(data=serializer.data)
         else:
@@ -48,9 +59,10 @@ class OrgView(APIView):
       def post(self,request,format='json'):
         if request.user.is_authenticated:
             data=request.data
-            data["members"]=[{'id':request.user.id}]
-            org_serializer=OrgSerializer(data=data)
-            if org_serializer.is_valid(raise_exception=True):
+            created_Org=Org.objects.create(name=request.data["name"])
+            OrgMembers.objects.create(org=created_Org,user=request.user,profile=1)
+            org_serializer=OrgSerializer(Org)
+            if org_serializer:
                  org=org_serializer.save()
                  if org:
                     return Response(data=org_serializer.data,status=status.HTTP_201_CREATED)

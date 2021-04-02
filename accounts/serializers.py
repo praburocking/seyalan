@@ -14,10 +14,15 @@ class ReporterSerializer(serializers.ModelSerializer):
         fields=('id','username','email')
         
 class MemberSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    email=serializers.SerializerMethodField()
     class Meta:
         model=OrgMembers
-        #fields=['id','profile','created_time','modified_time','invited_time','org','user']
-        fields=['id']
+        fields=['id','profile','created_time','modified_time','invited_time','org','user','username','email']
+    def get_username(self,obj):
+        return obj.user.username
+    def get_email(self,obj):
+        return obj.user.email
 
 class UserSerializer(serializers.ModelSerializer):
     id=serializers.UUIDField(read_only=True)
@@ -51,13 +56,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class OrgSerializer(serializers.ModelSerializer):
     id=serializers.CharField(read_only=True)
     orgtype=serializers.CharField(read_only=True)
-    members=MemberSerializer(many=True)
+    configured_members=MemberSerializer(many=True)
     created_time=serializers.DateTimeField(read_only=True)
     #name=serializers.CharField(min_length=5)
     modified_time=serializers.DateTimeField(read_only=True)
     name=serializers.CharField(required=True)
     class Meta:
-        fields=['id','orgtype','created_time','modified_time','name','members']
+        fields=['id','orgtype','created_time','modified_time','name','configured_members']
         model=Org
 
 
