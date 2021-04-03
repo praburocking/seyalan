@@ -10,7 +10,7 @@ from django.contrib.auth.models import PermissionsMixin
 from sequences import get_last_value,get_next_value,create_org_space,get_space
 storage = S3Storage(aws_s3_bucket_name='filesec-userimage')
 from django_currentuser.middleware import (get_current_user, get_current_authenticated_user)
-
+from licenses.models import License
 
 
 
@@ -117,6 +117,7 @@ class Org(models.Model):
     created_time=models.DateTimeField(null=False,auto_now_add=True)
     modified_time=models.DateTimeField(null=False,auto_now=True)
     name=models.CharField(max_length=250)
+    superAdmin=models.ForeignKey(User,on_delete=models.SET_NULL,related_name='+',null=True,blank=True)
 
         
     def __str__ (self):
@@ -126,7 +127,7 @@ class Org(models.Model):
         if self.id is None:
             self.id=create_org_space()
         super(Org, self).save(*args, **kwargs)
-        
+
         
         
 

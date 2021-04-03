@@ -36,7 +36,7 @@ AUTH_USER_MODEL = 'accounts.User'
 
 INSTALLED_APPS = [
     "sslserver",
-     'sequences',
+    'sequences',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django_s3_storage',
     'guardian',
     'accounts',
+    'licenses',
     'api',
     'userVerification'
 ]
@@ -66,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_currentuser.middleware.ThreadLocalUserMiddleware',
+    'orgMiddleWare.middleware.ThreadLocalUserMiddleware'
 ]
 
 ROOT_URLCONF = 'iam.urls'

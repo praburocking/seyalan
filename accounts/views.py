@@ -14,7 +14,7 @@ from .models import User,Org,OrgMembers
 from django.http.response import HttpResponse
 from django.core.files import File
 from .email import user_mail
-# from licenses.models import License,LICENSE
+from licenses.models import License,LICENSE
 # from licenses.serializer import LicenseSerializer
 # from licenses.util import LicenseUtil
 from django.contrib.auth import get_user_model
@@ -23,6 +23,8 @@ from http import HTTPStatus
 from userVerification.Confirm import sendConfirm
 from rest_framework.permissions import IsAuthenticated
 from knox.auth import TokenAuthentication
+from orgMiddleWare.middleware import (get_current_user, get_current_authenticated_user,get_current_org)
+
 import logging
 logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logger.py
 #f_handler=logging.FileHandler('logs/app.log')
@@ -34,6 +36,7 @@ class CurrentOrgView(APIView):
       permission_classes = [IsAuthenticated]
       authentication_classes = [TokenAuthentication]
       def get(self,request,id):
+        print(get_current_authenticated_user())
         if(request.user.is_authenticated):
             queryset=Org.objects.filter(configured_members__user__id=request.user.id,id=id)
             serializer=OrgSerializer(queryset,many=True)
@@ -47,6 +50,8 @@ class OrgView(APIView):
       permission_classes = [IsAuthenticated]
       authentication_classes = [TokenAuthentication]
       def get(self,request):
+        print(get_current_authenticated_user())
+        print(get_current_org())
         if(request.user.is_authenticated):
             queryset=Org.objects.filter(configured_members__user__id=request.user.id)
             serializer=OrgSerializer(queryset,many=True)
@@ -59,8 +64,9 @@ class OrgView(APIView):
       def post(self,request,format='json'):
         if request.user.is_authenticated:
             data=request.data
-            created_Org=Org.objects.create(name=request.data["name"])
+            created_Org=Org.objects.create(name=request.data["name"],superAdmin=request.user)
             OrgMembers.objects.create(org=created_Org,user=request.user,profile=1)
+            License.objects.create(Org=created_Org,)
             org_serializer=OrgSerializer(Org)
             if org_serializer:
                  org=org_serializer.save()
