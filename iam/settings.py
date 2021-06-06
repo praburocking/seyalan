@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from datetime import timedelta
+#from accounts.models import Org
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +27,7 @@ SECRET_KEY = 'f=8$zmq+^rkg6#27s@f--o%qee%#!47gqr06^+c=*u!w0%#kxh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['workmachine.com','test.workmachine.com']
 
 SITE_ID=1
 #user model
@@ -35,8 +36,9 @@ AUTH_USER_MODEL = 'accounts.User'
 # Application definition
 
 INSTALLED_APPS = [
+     'django_tenants',
     "sslserver",
-    'sequences',
+    # 'sequences',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +48,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-   
+    'tenantHandler',
     'knox',
     'django.contrib.sites',
     'django_s3_storage',
@@ -54,10 +56,13 @@ INSTALLED_APPS = [
     'accounts',
     'licenses',
     'api',
-    'userVerification'
+    'userVerification',
+    'workmachine'
 ]
 
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',
+    # 'tenantHandler.tenantMiddleware.XHeaderTenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -66,11 +71,56 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'orgMiddleWare.userMiddleware.AuthenticationMiddleware',
-    'orgMiddleWare.middleware.ThreadLocalUserMiddleware'
+    # 'orgMiddleWare.userMiddleware.AuthenticationMiddleware',
+    # 'orgMiddleWare.middleware.ThreadLocalUserMiddleware'
 ]
 
+SHARED_APPS = (
+     'django_tenants', # mandatory, should always be before any django app
+     "sslserver",
+    # 'sequences',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'tenantHandler',
+    'knox',
+    'django.contrib.sites',
+    'django_s3_storage',
+    'guardian',
+    'accounts',
+    'api',
+    'userVerification',
+    'licenses'
+)
+TENANT_APPS = (
+    'django.contrib.contenttypes',
+    'workmachine'
+)
+
+#DEFAULT_FILE_STORAGE="tenant_schemas.storage.TenantFileSystemStorage"
+
+TENANT_MODEL = "accounts.Org" # app.Model
 ROOT_URLCONF = 'iam.urls'
+TENANT_DOMAIN_MODEL = "accounts.Domain" 
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:8000',
+)
+
+# CACHES = {
+#     "default": {
+#         'KEY_FUNCTION': 'tenant_schemas.cache.make_key',
+#         'REVERSE_KEY_FUNCTION': 'tenant_schemas.cache.reverse_key',
+#     },
+# }
+
 
 TEMPLATES = [
     {
@@ -96,11 +146,18 @@ WSGI_APPLICATION = 'iam.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'NAME': 'workmachinedb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'POST': '',
     }
 }
 
+DATABASE_ROUTERS = (
+   'django_tenants.routers.TenantSyncRouter',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

@@ -1,7 +1,8 @@
-from .models import User,Org,OrgMembers
+from .models import User,Org,OrgMembers,Domain
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from userVerification.Confirm import sendConfirm
+from licenses.models import License
 
 
 
@@ -56,14 +57,28 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class OrgSerializer(serializers.ModelSerializer):
     id=serializers.CharField(read_only=True)
     orgtype=serializers.CharField(read_only=True)
-    configured_members=MemberSerializer(many=True)
+    configured_members=MemberSerializer(many=True,required=False)
     created_time=serializers.DateTimeField(read_only=True)
     #name=serializers.CharField(min_length=5)
     modified_time=serializers.DateTimeField(read_only=True)
     name=serializers.CharField(required=True)
+    domain_name=serializers.CharField(required=True,source='schema_name')
     class Meta:
-        fields=['id','orgtype','created_time','modified_time','name','configured_members']
+        fields=['id','orgtype','created_time','modified_time','name','configured_members','domain_name','superAdmin']
         model=Org
+    def create(self, validated_data):
+         print(validated_data)
+         org=Org.objects.create(**validated_data)
+         domain = Domain()
+         domain.domain = org.schema_name+'.workmachine.com' # don't add your port or www here!
+         domain.tenant = org
+         domain.is_primary = True
+         domain.save()
+         OrgMembers.objects.create(org=org,user=org.superAdmin,profile=1)
+         License.objects.create(org=org.id)
+         return org
+class OrgCreateSerializer(serializers.ModelSerializer):
+    pass
 
 
 

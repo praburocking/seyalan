@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 import uuid
 #from accounts.models import Org
+#from accounts.models import Org
 
 
 # Create your models here.
@@ -18,8 +19,6 @@ LICENSE={
 
 class License(models.Model):
 
-    id=models.BigIntegerField(primary_key=True,editable=False)
-    #org=models.OneToOneField(Org,related_name='License',on_delete=models.CASCADE)
+    id=models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
+    org=models.OneToOneField("accounts.Org",unique=True,null=False,blank=False,on_delete=models.CASCADE)
     licenseType=models.CharField(max_length=10,default=LICENSE["TRAIL"]["NAME"])
-    totalSpace=models.FloatField(default=LICENSE["FREE"]["SIZE"])
-    usedSpace=models.FloatField(default=0)

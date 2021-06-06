@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group
 from .models import User,Org,OrgMembers
 from .forms import change_form,create_form
 from django.contrib.auth.admin import UserAdmin
+from django_tenants.admin import TenantAdminMixin
 # Register your models here.
 
 class CustomUserAdmin(admin.ModelAdmin):
@@ -25,9 +26,13 @@ class CustomUserAdmin(admin.ModelAdmin):
     # search_fields = ('email',)
     # ordering = ('email',)
 
-
+@admin.register(Org)
+class ClientAdmin(TenantAdminMixin, admin.ModelAdmin):
+        pass
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Org, CustomUserAdmin)
-admin.site.register(OrgMembers, CustomUserAdmin)
+
+@admin.register(OrgMembers)
+class ClientAdmin(TenantAdminMixin, admin.ModelAdmin):
+        pass
 
 

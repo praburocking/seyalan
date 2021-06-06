@@ -64,11 +64,11 @@ class OrgView(APIView):
       def post(self,request,format='json'):
         if request.user.is_authenticated:
             data=request.data
-            created_Org=Org.objects.create(name=request.data["name"],superAdmin=request.user)
-            OrgMembers.objects.create(org=created_Org,user=request.user,profile=1)
-            License.objects.create(Org=created_Org,)
-            org_serializer=OrgSerializer(Org)
-            if org_serializer:
+            data['superAdmin']=request.user.id
+            print(data)
+            org_serializer=OrgSerializer(data=data)
+            #created_Org=Org.objects.create(name=request.data["name"],superAdmin=request.user)
+            if org_serializer.is_valid(raise_exception=True):
                  org=org_serializer.save()
                  if org:
                     return Response(data=org_serializer.data,status=status.HTTP_201_CREATED)
@@ -102,7 +102,7 @@ class createUser(APIView):
             if user:
                 #ue=user_mail(user.email)
                 #ue.welcome_email(user.username)
-                return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1], "license": newLicenseData},
+                return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1]},
                                 status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -179,11 +179,10 @@ class accountsView(APIView):
             queryset = User.objects.all()
             user = get_object_or_404(queryset, pk=request.user.id)
             US = UserSerializer(user)
-            license_value=None
             # licenseUtil = LicenseUtil(userId=user)
             # license_value=licenseUtil.getLicenseJo()
             # license_value["stripe_customer_id"]=get_customer(user=user).stripe_customer_id
-            return Response(data={"user":US.data,"license":license_value})
+            return Response(data={"user":US.data})
         else:
             return Response(data={"detail": "Unauthorized Access"}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -252,13 +251,5 @@ class forgotPassword(APIView):
             sendConfirm(user,'P_R')
             return Response(data={"details":"recovery mail is sent to the registered mail"},status=HTTPStatus.ACCEPTED)
 
-# class orgView(APIView):
-#     def get(self,request):
-#         if(request.user.is_authenticated):
-#             queryset=Org.objects.all()
-#             serializer=OrgSerializer(queryset,many=True)
-#             return Response(data=serializer.data)
-#         else:
-#             return Response(data={"details":"invalid data"})
 
             

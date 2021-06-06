@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models import UniqueConstraint
-
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
 from django_s3_storage.storage import S3Storage
 import uuid
@@ -11,7 +10,7 @@ from sequences import get_last_value,get_next_value,create_org_space,get_space
 storage = S3Storage(aws_s3_bucket_name='filesec-userimage')
 from django_currentuser.middleware import (get_current_user, get_current_authenticated_user)
 from licenses.models import License
-
+from django_tenants.models import TenantMixin, DomainMixin
 
 
 # Create your models here.
@@ -47,7 +46,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
 
-    id=models.BigIntegerField(primary_key=True,editable=False)
+    id=models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
     email=models.EmailField(unique=True,max_length=255)
     verified=models.BooleanField(null=False,default=False)
     username=models.CharField(null=False,max_length=255)
@@ -64,11 +63,11 @@ class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
     is_superuser=models.BooleanField(default=False)
 
 
-    def save(self,*args,**kwargs):
-        if self.id is None:
-            user_id=get_next_value('_user_id_',initial_value=111111111)
-            self.id=user_id
-        super(User,self).save(*args,**kwargs)
+    # def save(self,*args,**kwargs):
+    #     if self.id is None:
+    #         user_id=get_next_value('_user_id_',initial_value=111111111)
+    #         self.id=user_id
+    #     super(User,self).save(*args,**kwargs)
 
     USERNAME_FIELD='email'
 
@@ -107,26 +106,26 @@ class User(AbstractBaseUser,PermissionsMixin,guardian.mixins.GuardianUserMixin):
 
 
 
-class Org(models.Model):
+class Org(TenantMixin):
     ORG_TYPE = (
         ('1', 'WORK_FLOW_MACHIN'),
     )
-    id=models.BigIntegerField(primary_key=True,editable=False)
+    id=models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
     orgtype=models.TextField(max_length=1, choices=ORG_TYPE, default="1")
     members = models.ManyToManyField(User, through='OrgMembers',through_fields=('org', 'user'))
     created_time=models.DateTimeField(null=False,auto_now_add=True)
     modified_time=models.DateTimeField(null=False,auto_now=True)
     name=models.CharField(max_length=250)
-    superAdmin=models.ForeignKey(User,on_delete=models.SET_NULL,related_name='+',null=True,blank=True)
+    superAdmin=models.OneToOneField(User,on_delete=models.SET_NULL,related_name='+',null=True,blank=True,unique=True)
 
         
     def __str__ (self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if self.id is None:
-            self.id=create_org_space()
-        super(Org, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.id is None:
+    #         self.id=create_org_space()
+    #     super(Org, self).save(*args, **kwargs)
 
         
         
@@ -138,10 +137,9 @@ class OrgMembers(models.Model):
         ('2','DATA_ADMIN'),
         ('3','STD')
     )
-   
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='configured_orgs')
     org = models.ForeignKey(Org, on_delete=models.CASCADE,related_name='configured_members')
-    id=models.BigIntegerField(primary_key=True,editable=False)
+    id=models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
     profile=models.CharField(max_length=5,choices=PROFILE)
     created_time=models.DateTimeField(auto_now_add=True)
     modified_time=models.DateTimeField(auto_now=True)
@@ -152,12 +150,15 @@ class OrgMembers(models.Model):
         constraints = [
                     UniqueConstraint(fields=['user','org'], name='unique_user_per_org')           
         ]
-    def save(self,*args,**kwargs):
-        if self.id is None:
-            print(self.org.id)
-            cur_range=get_space(self.org.id)
+    # def save(self,*args,**kwargs):
+    #     if self.id is None:
+    #         print(self.org.id)
+    #         cur_range=get_space(self.org.id)
 
-            print(cur_range)
-            str_init=str(cur_range)+"000000000000"
-            self.id=get_next_value(self.org.id, initial_value=int(str_init))
-        super(OrgMembers,self).save(*args,**kwargs)
+    #         print(cur_range)
+    #         str_init=str(cur_range)+"000000000000"
+    #         self.id=get_next_value(self.org.id, initial_value=int(str_init))
+    #     super(OrgMembers,self).save(*args,**kwargs)
+
+class Domain(DomainMixin):
+        pass
