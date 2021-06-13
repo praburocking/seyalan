@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from userVerification.Confirm import sendConfirm
 from licenses.models import License
+from userVerification.Confirm import sendConfirm
 
 
 
@@ -37,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(email=validated_data['email'], password=validated_data['password'],username=validated_data['username'])
-        #sendConfirm(user,'U_V')
+        sendConfirm(user,'U_V')
         return user
 
     def update(self, instance, validated_data):

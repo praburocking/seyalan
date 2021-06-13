@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from datetime import timedelta
-#from accounts.models import Org
+from dotenv import dotenv_values
+
+env = dotenv_values(".env")
+print(env)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -125,7 +128,7 @@ CORS_ORIGIN_WHITELIST = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'build'),os.path.join(BASE_DIR,'emailTemplates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -219,3 +222,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env['EMAIL_HOST']
+EMAIL_USE_TLS = True
+EMAIL_PORT = env['EMAIL_PORT']
+EMAIL_HOST_USER = env['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = env['EMAIL_HOST_PASSWORD']
+
+
+#for authentication emails
+EMAIL_SERVER = env['EMAIL_HOST']
+EMAIL_ADDRESS = env['EMAIL_HOST_USER']
+EMAIL_PASSWORD = env['EMAIL_HOST_PASSWORD']
+EMAIL_MAIL_SUBJECT = 'Confirm your email'
+EMAIL_MAIL_HTML ="verificationEmail.html"
+EMAIL_PAGE_TEMPLATE="verificationResponse.html"
+USER_VERIFICATION_HTML_TEMPLATE={'U_V': "verificationEmail.html",'P_R':"passwordReset.html"}
+EMAIL_USER_VERIFICATION_LINK = env['HOST_URL']+'/verify/'
+EMAIL_MODEL_ADMIN = False # the default value is False

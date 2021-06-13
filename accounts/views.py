@@ -100,8 +100,8 @@ class createUser(APIView):
              #{"stripe_customer_id":stripe_customer.stripe_customer_id}#licenSerializer.data["stripe_customer_id=stripe_customer.stripe_customer_id
             # newLicenseData.update(licenSerializer.data)
             if user:
-                #ue=user_mail(user.email)
-                #ue.welcome_email(user.username)
+                ue=user_mail(user.email)
+                ue.welcome_email(user.username)
                 return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1]},
                                 status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

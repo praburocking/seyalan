@@ -145,7 +145,7 @@ class OrgMembers(models.Model):
     modified_time=models.DateTimeField(auto_now=True)
     invited_time=models.DateTimeField(null=True,blank=True)
     reporting_to=models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,related_name="reporters",null=True)
-
+    is_verified_member=models.BooleanField(default=False)
     class Meta:
         constraints = [
                     UniqueConstraint(fields=['user','org'], name='unique_user_per_org')           

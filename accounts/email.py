@@ -13,6 +13,7 @@ class user_mail:
         message = 'Hi '+name +',<div><br></div><div>Thanks for signingup with Digy-Coffer, a place to store your important digital documents. <br> In digy-coffer we strive to create a safe space on internet to store our personal data so that it can be easily accessible and safe. <br> please feel free to mail back, if you need any assistance.</div><div><br></div><div><br></div><div>with regards,</div><div>Prabu.M</div>'
         msg = EmailMessage(subject, message,self.email_from, self.recipients)
         msg.content_subtype = "html"  # Main content is now text/html
+        print(msg)
         return msg.send()
     
     def sendVerification_email(self,name,key):
