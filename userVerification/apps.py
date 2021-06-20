@@ -1,5 +1,5 @@
-from django.apps import AppConfig
+# from django.apps import AppConfig
 
 
-class DjangoEmailConfimConfig(AppConfig):
-    name = 'email_verification'
+# class DjangoEmailConfimConfig(AppConfig):
+#     name = 'email_verification'

@@ -1,1 +1,0 @@
-from .Confirm import sendConfirm, verifyToken, verify
