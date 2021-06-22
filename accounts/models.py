@@ -121,6 +121,8 @@ class Org(TenantMixin):
         
     def __str__ (self):
         return self.name
+    def get_domain(self):
+        return Domain.objects.get(tenant=self).domain
 
     # def save(self, *args, **kwargs):
     #     if self.id is None:

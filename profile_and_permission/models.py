@@ -1,5 +1,6 @@
 from django.db import models
 from tenant_user_handle.models import Org,User
+import uuid
 # Create your models here.
 
 class Permission(models.Model):
@@ -15,6 +16,10 @@ class Profile(models.Model):
     desc=models.TextField(null=True)
     users=models.ManyToManyField(User)
     permissions=models.ManyToManyField(Permission)
+
+
+
+
 
 
 

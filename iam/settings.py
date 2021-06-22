@@ -41,7 +41,7 @@ AUTH_USER_MODEL = 'accounts.User'
 INSTALLED_APPS = [
      'django_tenants',
     "sslserver",
-    # 'sequences',
+     'sequences',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,7 +60,9 @@ INSTALLED_APPS = [
     'licenses',
     'api',
     'userVerification',
-    'workmachine'
+    'workmachine',
+    'profile_and_permission',
+    'tenant_user_handle'
 ]
 
 MIDDLEWARE = [
@@ -81,7 +83,7 @@ MIDDLEWARE = [
 SHARED_APPS = (
      'django_tenants', # mandatory, should always be before any django app
      "sslserver",
-    # 'sequences',
+     'sequences',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -104,6 +106,8 @@ SHARED_APPS = (
 TENANT_APPS = (
     'django.contrib.contenttypes',
     'workmachine',
+    'tenant_user_handle',
+    'profile_and_permission',
     'tenant_user_handle'
 )
 

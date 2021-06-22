@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import UserSerializer,UserUpdateSerializer,OrgSerializer
+from .serializers import UserSerializer,UserUpdateSerializer,OrgSerializer,Signup_serializer
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework import status
@@ -87,22 +87,14 @@ class createUser(APIView):
     authentication_classes = [BasicAuthentication]
     throttle_scope = 'signin/signup'
     def post(self, request, format='json'):
-        serializer = UserSerializer(data=request.data)
+        serializer = Signup_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            user = serializer.save()
-            # licen= License.objects.create(userId=user,licenseType=LICENSE["FREE"]["NAME"],totalSpace=LICENSE["FREE"]["SIZE"])
-            # licenSerializer=LicenseSerializer(licen)
-            # stripe_customer=create_customer(user=user,license=licen)
-            # print(stripe_customer)
-            # logger.info("license serialiser data ==> %s",licenSerializer.data)
-            # logger.info("type of the data %s",type(licenSerializer.data))
-            newLicenseData={}
-             #{"stripe_customer_id":stripe_customer.stripe_customer_id}#licenSerializer.data["stripe_customer_id=stripe_customer.stripe_customer_id
-            # newLicenseData.update(licenSerializer.data)
+            signup_data = serializer.save()
+            user=signup_data['user']
             if user:
                 ue=user_mail(user.email)
                 ue.welcome_email(user.username)
-                return Response({"user": serializer.data, "authtoken": AuthToken.objects.create(user)[1]},
+                return Response({"user": serializer.data['user'],'org':serializer.data['org'], "authtoken": AuthToken.objects.create(user)[1]},
                                 status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
