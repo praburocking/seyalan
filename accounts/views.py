@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db import transaction
 from rest_framework.views import APIView
 from .serializers import UserSerializer,UserUpdateSerializer,OrgSerializer,Signup_serializer
 from rest_framework.authentication import BasicAuthentication
@@ -24,6 +25,8 @@ from userVerification.Confirm import sendConfirm
 from rest_framework.permissions import IsAuthenticated
 from knox.auth import TokenAuthentication
 from orgMiddleWare.middleware import (get_current_user, get_current_authenticated_user,get_current_org)
+from tenant_user_handle.tenant_user import tenant_user,tenant_org
+
 
 import logging
 logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logger.py
@@ -87,16 +90,27 @@ class createUser(APIView):
     authentication_classes = [BasicAuthentication]
     throttle_scope = 'signin/signup'
     def post(self, request, format='json'):
-        serializer = Signup_serializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            signup_data = serializer.save()
-            user=signup_data['user']
-            if user:
-                ue=user_mail(user.email)
-                ue.welcome_email(user.username)
-                return Response({"user": serializer.data['user'],'org':serializer.data['org'], "authtoken": AuthToken.objects.create(user)[1]},
-                                status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        with transaction.atomic():
+            serializer = Signup_serializer(data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                signup_data=serializer.save()
+                print(type(signup_data))
+                print("$%$$$$$$$$$$$$$$")
+                #print(signup_data)
+                print("#$%$#%#$%#$%#$%#$%#$%#$%#$%#$%#$%#$%#$%$#%$#%$#%")
+                user=signup_data['user']
+                if user:
+                    tenant_user_obj=tenant_user(signup_data['org'])
+                    tenant_user_obj.create_tenant_user(user)
+                    tenant_org_obj=tenant_org(signup_data['org'])
+                    tenant_org_obj.create_tenant_org(signup_data['org'])
+                   
+                    #ue=user_mail(user['email'])
+                    #ue.welcome_email(user['username'])
+
+                    return Response({"user": UserSerializer(user).data,'org':OrgSerializer(signup_data['org']).data, "authtoken": AuthToken.objects.create(user)[1]},
+                                    status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

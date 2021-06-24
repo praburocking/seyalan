@@ -22,3 +22,4 @@ class License(models.Model):
     id=models.UUIDField( primary_key = True, default = uuid.uuid4, editable = False)
     org=models.OneToOneField("accounts.Org",unique=True,null=False,blank=False,on_delete=models.CASCADE)
     licenseType=models.CharField(max_length=10,default=LICENSE["TRAIL"]["NAME"])
+    user_count=models.IntegerField(default=5)

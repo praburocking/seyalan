@@ -1,3 +1,4 @@
+#from typing_extensions import Required
 from .models import User,Org,OrgMembers,Domain
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
@@ -42,6 +43,8 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(email=validated_data['email'], password=validated_data['password'],username=validated_data['username'])
         sendConfirm(user,'U_V')
+        print("$$$$$$$$$$$$$____$$$$$$$$$$")
+        print(type(user))
         return user
 
     def update(self, instance, validated_data):
@@ -66,13 +69,15 @@ class OrgSerializer(serializers.ModelSerializer):
     modified_time=serializers.DateTimeField(read_only=True)
     name=serializers.CharField(required=True)
     domain=serializers.CharField(required=True,source='get_domain')
+    #domain = serializers.SerializerMethodField(Required=True)
+    #def get_domain
     class Meta:
         fields=['id','orgtype','created_time','modified_time','name','configured_members','domain','superAdmin']
         model=Org
     def create(self, validated_data):
-         validated_data['schema_name']= get_next_value('schema_name',initial_value=1000)+"wm_db"
+         validated_data['schema_name']=str( get_next_value('schema_name',initial_value=1000))+"wm_db"
          print(validated_data)
-         domain_name=validated_data.pop('domain')
+         domain_name=validated_data.pop('get_domain')
          org=Org.objects.create(**validated_data)
          domain = Domain()
          domain.domain = domain_name+'.workmachine.com' # don't add your port or www here!
@@ -80,7 +85,7 @@ class OrgSerializer(serializers.ModelSerializer):
          domain.is_primary = True
          domain.save()
          OrgMembers.objects.create(org=org,user=org.superAdmin,profile=1)
-         License.objects.create(org=org.id)
+         License.objects.create(org=org)
          return org
 class OrgCreateSerializer(serializers.ModelSerializer):
     pass
@@ -93,18 +98,22 @@ class Signup_serializer(serializers.Serializer):
     user=UserSerializer()
     org=OrgSerializer()
     def create(self,validated_data):
-        with transaction.atomic():
+           print(validated_data)
            user=UserSerializer(data=validated_data['user'])
            user.is_valid(raise_exception=True)
-           user.save()
+           user_model=user.save()
 
            org_data=validated_data['org'] 
            org_data['superAdmin']=user.data['id']  
+           org_data['domain']=org_data['get_domain']
            org=OrgSerializer(data=validated_data['org'])
            print(validated_data['org'])
            org.is_valid(raise_exception=True)
-           org.save()
-           return self.__class__({'user': user, 'org': org})
+           org_model=org.save()
+           print("$$$$$$ check here")
+           print(type(user))
+           print(user.data)
+           return {'user': user_model, 'org': org_model}
 
 
 
