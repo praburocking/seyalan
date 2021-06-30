@@ -95,9 +95,7 @@ class createUser(APIView):
             if serializer.is_valid(raise_exception=True):
                 signup_data=serializer.save()
                 print(type(signup_data))
-                print("$%$$$$$$$$$$$$$$")
                 #print(signup_data)
-                print("#$%$#%#$%#$%#$%#$%#$%#$%#$%#$%#$%#$%#$%$#%$#%$#%")
                 user=signup_data['user']
                 if user:
                     tenant_user_obj=tenant_user(signup_data['org'])
@@ -155,7 +153,8 @@ class loginView(APIView):
              
                     # license_value["stripe_customer_id"]=get_customer(user=user).stripe_customer_id
                     # print(license_value)
-                    return Response(data={"user": UserSerializer(instance=user).data, "authtoken": AuthToken.objects.create(user)[1], "license": license_value})
+                    org=OrgMembers.objects.get(user=user).org
+                    return Response(data={"user": UserSerializer(instance=user).data, "authtoken": AuthToken.objects.create(user)[1], "license": license_value,"org":OrgSerializer(org).data})
                 elif user is not None and not user.verified:
                     sendConfirm(user,'U_V')
                     return Response(data={"detail": "user not verified, new email send please verify the user"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -188,7 +187,8 @@ class accountsView(APIView):
             # licenseUtil = LicenseUtil(userId=user)
             # license_value=licenseUtil.getLicenseJo()
             # license_value["stripe_customer_id"]=get_customer(user=user).stripe_customer_id
-            return Response(data={"user":US.data})
+            org=OrgMembers.objects.get(user=user).org
+            return Response(data={"user":US.data,"org":OrgSerializer(org).data})
         else:
             return Response(data={"detail": "Unauthorized Access"}, status=status.HTTP_401_UNAUTHORIZED)
 

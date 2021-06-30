@@ -68,9 +68,12 @@ class OrgSerializer(serializers.ModelSerializer):
     created_time=serializers.DateTimeField(read_only=True)
     modified_time=serializers.DateTimeField(read_only=True)
     name=serializers.CharField(required=True)
-    domain=serializers.CharField(required=True,source='get_domain')
-    #domain = serializers.SerializerMethodField(Required=True)
+    #domain=serializers.CharField(required=True,source='get_domain')
+    domain = serializers.SerializerMethodField()
     #def get_domain
+
+    def get_domain(self,obj):
+            return Domain.objects.get(tenant=obj).domain
     class Meta:
         fields=['id','orgtype','created_time','modified_time','name','configured_members','domain','superAdmin']
         model=Org
