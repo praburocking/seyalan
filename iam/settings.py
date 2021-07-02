@@ -30,7 +30,7 @@ SECRET_KEY = 'f=8$zmq+^rkg6#27s@f--o%qee%#!47gqr06^+c=*u!w0%#kxh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['workmachine.com','test.workmachine.com']
+ALLOWED_HOSTS = ['workmachine.com','test.workmachine.com','.workmachine.com']
 
 SITE_ID=1
 #user model
