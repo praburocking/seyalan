@@ -77,7 +77,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'orgMiddleWare.userMiddleware.AuthenticationMiddleware',
-    # 'orgMiddleWare.middleware.ThreadLocalUserMiddleware'
+    #  'orgMiddleWare.middleware.ThreadLocalUserMiddleware'
 ]
 
 SHARED_APPS = (
@@ -190,6 +190,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+     'DEFAULT_PERMISSION_CLASSES': [
+        'tenant_user_handle.permissions.TentantPermission',
+    ]
 }
 
 

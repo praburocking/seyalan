@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Permission
 from django.shortcuts import render
 from django.db import transaction
 from rest_framework.views import APIView
@@ -26,7 +27,7 @@ from rest_framework.permissions import IsAuthenticated
 from knox.auth import TokenAuthentication
 from orgMiddleWare.middleware import (get_current_user, get_current_authenticated_user,get_current_org)
 from tenant_user_handle.tenant_user import tenant_user,tenant_org
-
+from tenant_user_handle.permissions import TentantPermission, IsNotAuthenticated
 
 import logging
 logger = logging.getLogger(__name__)  # eg: log_viewer_demo/log_viewer_demo/logger.py
@@ -36,21 +37,17 @@ logger.setLevel(logging.INFO)
 
 # Create your views here.
 class CurrentOrgView(APIView):
-      permission_classes = [IsAuthenticated]
+      permission_classes = [TentantPermission]
       authentication_classes = [TokenAuthentication]
       def get(self,request,id):
         print(get_current_authenticated_user())
-        if(request.user.is_authenticated):
-            queryset=Org.objects.filter(configured_members__user__id=request.user.id,id=id)
-            serializer=OrgSerializer(queryset,many=True)
-            return Response(data=serializer.data)
-        else:
-            return Response(data={"details":"invalid data"})
-
+        queryset=Org.objects.filter(configured_members__user__id=request.user.id,id=id)
+        serializer=OrgSerializer(queryset,many=True)
+        return Response(data=serializer.data)
 
 
 class OrgView(APIView):
-      permission_classes = [IsAuthenticated]
+      permission_classes = [TentantPermission]
       authentication_classes = [TokenAuthentication]
       def get(self,request):
         print(get_current_authenticated_user())
@@ -88,6 +85,8 @@ class OrgView(APIView):
 class createUser(APIView):
 
     authentication_classes = [BasicAuthentication]
+    permission_classes = [IsNotAuthenticated]
+    Permission
     throttle_scope = 'signin/signup'
     def post(self, request, format='json'):
         with transaction.atomic():
@@ -135,6 +134,7 @@ class userExist(APIView):
 
 class loginView(APIView):
     authentication_classes = [BasicAuthentication]
+    permission_classes = [IsNotAuthenticated]
     throttle_scope = 'signin/signup'
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -169,7 +169,7 @@ class loginView(APIView):
 
 
 class accountsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [TentantPermission]
     authentication_classes = [TokenAuthentication]
 
     def delete(self, request, format='json'):
@@ -233,6 +233,7 @@ class accountsImageView(APIView):
             return Response({"detail": "not authenticated"})
 
 class passwordChange(APIView):
+    permission_classes = [IsNotAuthenticated]
     throttle_scope = 'reset'
     def post(self,request):
         if(request.user.is_authenticated):
@@ -247,6 +248,7 @@ class passwordChange(APIView):
             return Response(data={"detail":"not authenticated"},status=HTTPStatus.FORBIDDEN)    
 
 class forgotPassword(APIView):
+    permission_classes = [IsNotAuthenticated]
     throttle_scope = 'reset'
     def post(self,request):
         if(request.user.is_authenticated):

@@ -6,6 +6,7 @@ from sequences import get_range
 from django.http.response import HttpResponse
 from rest_framework.response import Response
 from rest_framework import status
+from knox.auth import TokenAuthentication
 
 
 USER_ATTR_NAME = getattr(settings, 'LOCAL_USER_ATTR_NAME', '_current_user')
@@ -60,16 +61,20 @@ class ThreadLocalUserMiddleware(object):
         # memorization is implemented in
         # request.user (non-data descriptor)
         if request.META['PATH_INFO'].startswith('/api'):
-            _do_set_current_user(lambda self: getattr(request, 'user', None))
-            org_set=True
-            if( 'org-id' in request.headers.keys() and request.META['PATH_INFO'] not in EXCLUDE_URLS):
-                org_set=_do_set_current_org( request.headers['org-id'])
-            elif ('org-id' not in request.headers.keys() and request.META['PATH_INFO'] not in EXCLUDE_URLS):
-                response= HttpResponse('{"details":"org header not found"}',status=status.HTTP_400_BAD_REQUEST)
-                return response
-            if not org_set:
-                response= HttpResponse('{"details":"invalid org header"}',status=status.HTTP_400_BAD_REQUEST)
-                return response
+            user=TokenAuthentication().authenticate(request)[0];
+            request.user=user
+            print("$$$$$$$$$$$$$$$$$$$$$$$$$$")
+            print(request.user)
+            print(request.tenant)
+            # org_set=True
+            # if( 'org-id' in request.headers.keys() and request.META['PATH_INFO'] not in EXCLUDE_URLS):
+            #     org_set=_do_set_current_org( request.headers['org-id'])
+            # elif ('org-id' not in request.headers.keys() and request.META['PATH_INFO'] not in EXCLUDE_URLS):
+            #     response= HttpResponse('{"details":"org header not found"}',status=status.HTTP_400_BAD_REQUEST)
+            #     return response
+            # if not org_set:
+            #     response= HttpResponse('{"details":"invalid org header"}',status=status.HTTP_400_BAD_REQUEST)
+            #     return response
         response = self.get_response(request)
         return response
 
