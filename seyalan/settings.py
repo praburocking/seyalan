@@ -71,6 +71,7 @@ MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
     # 'tenantHandler.tenantMiddleware.XHeaderTenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -92,6 +93,7 @@ SHARED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     'whitenoise.runserver_nostatic',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -232,8 +234,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+ #static configurations
 STATIC_URL = '/static/'
-
+STATIC_ROOT =os.path.join(BASE_DIR, 'build', 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'dev_static'),
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env['EMAIL_HOST']
