@@ -30,7 +30,8 @@ SECRET_KEY = 'f=8$zmq+^rkg6#27s@f--o%qee%#!47gqr06^+c=*u!w0%#kxh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['workmachine.com','test.workmachine.com','.workmachine.com']
+ALLOWED_HOSTS = ['seyalan.com','.seyalan.com']
+BASE_DOMAIN='seyalan.com'
 
 SITE_ID=1
 #user model
@@ -62,7 +63,8 @@ INSTALLED_APPS = [
     'userVerification',
     'workmachine',
     'profile_and_permission',
-    'tenant_user_handle'
+    'tenant_user_handle',
+    'kanbanview'
 ]
 
 MIDDLEWARE = [
@@ -108,7 +110,8 @@ TENANT_APPS = (
     'workmachine',
     'tenant_user_handle',
     'profile_and_permission',
-    'tenant_user_handle'
+    'tenant_user_handle',
+    'kanbanview'
 )
 
 #DEFAULT_FILE_STORAGE="tenant_schemas.storage.TenantFileSystemStorage"
@@ -155,7 +158,7 @@ WSGI_APPLICATION = 'seyalan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'workmachinedb',
+        'NAME': 'seyalan',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',

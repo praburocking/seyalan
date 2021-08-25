@@ -8,6 +8,7 @@ from userVerification.Confirm import sendConfirm
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from django.db import transaction
 from sequences import get_last_value,get_next_value
+from django.conf import settings
 
 
 
@@ -83,7 +84,7 @@ class OrgSerializer(serializers.ModelSerializer):
          domain_name=validated_data.pop('get_domain')
          org=Org.objects.create(**validated_data)
          domain = Domain()
-         domain.domain = domain_name+'.workmachine.com' # don't add your port or www here!
+         domain.domain = domain_name+'.'+settings.BASE_DOMAIN # don't add your port or www here!
          domain.tenant = org
          domain.is_primary = True
          domain.save()
