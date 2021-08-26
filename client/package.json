@@ -1,5 +1,5 @@
 {
-  "name": "tailwind",
+  "name": "seyalan",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -46,7 +46,8 @@
     "start": "run-p env:dev watch:css react-scripts:start",
     "build": "run-s env:prod build:css react-scripts:build ",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "relocate": "rm -rf ../backend/build && mv -f build ../backend"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,5 +65,9 @@
     ]
   },
   "keywords": [],
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2"
+  }
 }

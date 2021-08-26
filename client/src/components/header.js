@@ -80,19 +80,19 @@ props.history.push('/settings')
               <div className="flex pl-3">
                 <span className="  -ml-2">
                   <img
-                    src="assets/images/pp1.jpg"
+                    src="static/assets/images/pp1.jpg"
                     className="w-7 h-7 rounded-full border-white border-2 "
                   />
                 </span>
                 <span className="  -ml-2">
                   <img
-                    src="assets/images/pp2.jpg"
+                    src="static/assets/images/pp2.jpg"
                     className="w-7 h-7 rounded-full border-2 border-white"
                   />
                 </span>
                 <span className=" -ml-2">
                   <img
-                    src="assets/images/pp3.jpg"
+                    src="static/assets/images/pp3.jpg"
                     className="w-7 h-7 rounded-full  border-2 border-white"
                   />
                 </span>

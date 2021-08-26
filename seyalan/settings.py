@@ -124,7 +124,8 @@ TENANT_DOMAIN_MODEL = "accounts.Domain"
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
-  'http://workmachine.com:8000',
+  'http://seyalan.com:8000',
+  'http://seyalan.com'
 )
 
 # CACHES = {
@@ -138,7 +139,7 @@ CORS_ORIGIN_WHITELIST = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build'),os.path.join(BASE_DIR,'emailTemplates')],
+        'DIRS': [os.path.join(BASE_DIR, 'client/build'),os.path.join(BASE_DIR,'emailTemplates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -236,10 +237,11 @@ USE_TZ = True
 
  #static configurations
 STATIC_URL = '/static/'
-STATIC_ROOT =os.path.join(BASE_DIR, 'build', 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'dev_static'),
-]
+STATIC_ROOT =os.path.join(BASE_DIR, 'client','build', 'static')
+# STATICFILES_DIRS = [
+#     # os.path.join(BASE_DIR, 'dev_static'),
+#     os.path.join(BASE_DIR, 'client','build','static'),
+# ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

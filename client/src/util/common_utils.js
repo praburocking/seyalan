@@ -42,6 +42,14 @@ document.cookie=cname+"="+cvalue+"; domain=" + baseDomain + "; expires=" + expir
     return "";
   }
 
+export function getServerUrl() {
+
+}
+
+export function getClientUrl(){
+  
+}
+
   export function deleteCookie(cname, ) {
     document.cookie = cname + "= ; expires =Thu, 01 Jan 1970 00:00:00 GMT ;path=/";
   }

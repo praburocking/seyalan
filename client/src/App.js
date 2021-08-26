@@ -23,29 +23,32 @@ require('dotenv').config()
 function App(props) {
   const [authData,setAuthData]=useRecoilState(authRepo);
   const names = useRecoilValue(authRepo);
-
+  window.isProdEnv= process.env.NODE_ENV === 'production';
+ const isProdEnv = process.env.NODE_ENV === 'production';
   const getUsers=async ()=>{
     const domain=getCookie("domain");
+    console.log('domain ==>',domain)
     if(domain){
-        window.api_domain=process.env.REACT_APP_SERVER_PROTOCOL+"://"+domain+":"+process.env.REACT_APP_SERVER_PORT;
+        window.api_domain=process.env.REACT_APP_SERVER_PROTOCOL+"://"+domain+(window.isProdEnv?"":process.env.REACT_APP_SERVER_PORT);
         const response=await getUser();
         console.log("user response ==>",response)
         if(response && response.status===200){
           const token=getCookie("token");
           setAuthData(token);
           if(!window.location.host.includes(domain)){
-                window.location=process.env.REACT_APP_SERVER_PROTOCOL+"://"+domain+":"+process.env.REACT_APP_CLIENT_PORT;
+                window.location=process.env.REACT_APP_SERVER_PROTOCOL+"://"+domain+(window.isProdEnv?"":process.env.REACT_APP_CLIENT_PORT);
           }
         }else
         {
           deleteToken();
           deleteCookie('domain');
-          window.api_domain=process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+":"+process.env.REACT_APP_SERVER_PORT;
+          window.api_domain=process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+(window.isProdEnv?"":process.env.REACT_APP_SERVER_PORT);
+         // console.log("api_domain ==>",window.api_domain, " window asdfad===>",process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+(window.isProdEnv?"":process.env.REACT_APP_SERVER_PORT))
           var host=window.location.host
           var parts=host.split(".");
           console.log("paerts ==>",parts)
           if(parts.length>=3){
-            window.location=process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+":"+process.env.REACT_APP_CLIENT_PORT;
+            window.location=process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+(window.isProdEnv?"":process.env.REACT_APP_CLIENT_PORT);
             }
           return false;
         }
@@ -53,12 +56,13 @@ function App(props) {
     else{
       deleteToken();
       deleteCookie('domain');
-      window.api_domain=process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+":"+process.env.REACT_APP_SERVER_PORT;
+      window.api_domain=process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+(window.isProdEnv?"":process.env.REACT_APP_SERVER_PORT);
+      //console.log("api_domain ==>",window.api_domain, " window asdfad===>",process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+window.isProdEnv?"":process.env.REACT_APP_SERVER_PORT)
       var host=window.location.host
       var parts=host.split(".");
       console.log("paerts ==>",parts)
       if(parts.length>=3){
-        window.location=process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+":"+process.env.REACT_APP_CLIENT_PORT;
+        window.location=process.env.REACT_APP_SERVER_PROTOCOL+"://"+process.env.REACT_APP_SERVER_URL+(window.isProdEnv?"":process.env.REACT_APP_CLIENT_PORT);
         }
       return false;
     }

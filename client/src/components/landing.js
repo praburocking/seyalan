@@ -10,7 +10,7 @@ const LandingPage=(props)=>{
             <header>
                 <nav className="flex items-center mx-4 px-4 mt-4 ">
                     <div className="flex">
-                    <div><img src="assets/images/logo.png" className="w-9 h-5 m-2"></img></div>
+                    <div><img src="static/assets/images/logo.png" className="w-9 h-5 m-2"></img></div>
 <div className="hidden sm:block tracking-widest text-gray-800 text-xl font-semibold">SEYALAN</div>
 </div>
 <ul className=" hidden sm:flex flex-1 justify-end items-center uppercase gap-12 text-blue-500 text-xs">
@@ -47,7 +47,7 @@ const LandingPage=(props)=>{
     {/* left text end */}
     {/* right image */}
 <div className="flex justify-center z-20">
-    <img className="w-5/6 h-full rounded-lg"src="assets/images/kanbanview.png" alt="kanbanview image"/>
+    <img className="w-5/6 h-full rounded-lg"src="static/assets/images/kanbanview.png" alt="kanbanview image"/>
     
 </div>
 
