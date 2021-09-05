@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from datetime import timedelta
 from dotenv import dotenv_values
+import django_heroku
 
 env = dotenv_values(".env")
 print(env)
@@ -262,3 +263,5 @@ EMAIL_PAGE_TEMPLATE="verificationResponse.html"
 USER_VERIFICATION_HTML_TEMPLATE={'U_V': "verificationEmail.html",'P_R':"passwordReset.html"}
 EMAIL_USER_VERIFICATION_LINK = env['HOST_URL']+'/verify/'
 EMAIL_MODEL_ADMIN = False # the default value is False
+
+django_heroku.settings(locals())
