@@ -164,11 +164,11 @@ WSGI_APPLICATION = 'seyalan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'seyalan',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'localhost',
-        'POST': '',
+        'NAME': env['DATABASE_NAME'],
+        'USER': env['DATABASE_USER'],
+        'PASSWORD': env['DATABASE_PASSWORD'],
+        'HOST': env['DATABASE_HOST'],
+        'PORT': '',
     }
 }
 
@@ -268,4 +268,5 @@ USER_VERIFICATION_HTML_TEMPLATE={'U_V': "verificationEmail.html",'P_R':"password
 EMAIL_USER_VERIFICATION_LINK = env['HOST_URL']+'/verify/'
 EMAIL_MODEL_ADMIN = False # the default value is False
 
-django_heroku.settings(locals(),staticfiles=False)
+django_heroku.settings(locals(),staticfiles=False,databases=False)
+print(DATABASES)
