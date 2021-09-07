@@ -14,6 +14,7 @@ import os
 from datetime import timedelta
 from dotenv import dotenv_values
 import django_heroku
+import dj_database_url
 
 env = dotenv_values(".env")
 print(env)
@@ -171,6 +172,8 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 DATABASE_ROUTERS = (
    'django_tenants.routers.TenantSyncRouter',
 )

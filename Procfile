@@ -1,0 +1,1 @@
+web gunicorn seyalan.wsgi --log-file -
