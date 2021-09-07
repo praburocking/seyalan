@@ -126,7 +126,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
   'http://seyalan.com:8000',
-  'http://seyalan.com'
+  'http://seyalan.com',
+  'https://seyalan.com'
 )
 
 # CACHES = {
@@ -264,4 +265,4 @@ USER_VERIFICATION_HTML_TEMPLATE={'U_V': "verificationEmail.html",'P_R':"password
 EMAIL_USER_VERIFICATION_LINK = env['HOST_URL']+'/verify/'
 EMAIL_MODEL_ADMIN = False # the default value is False
 
-django_heroku.settings(locals())
+django_heroku.settings(locals(),staticfiles=False)
