@@ -15,9 +15,13 @@ from datetime import timedelta
 from dotenv import dotenv_values
 import django_heroku
 import dj_database_url
-
-env = dotenv_values(".env")
-print(env)
+import environ
+# env = dotenv_values(".env")
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
+print(env('DATABASE_NAME'))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -164,10 +168,10 @@ WSGI_APPLICATION = 'seyalan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': env['DATABASE_NAME'],
-        'USER': env['DATABASE_USER'],
-        'PASSWORD': env['DATABASE_PASSWORD'],
-        'HOST': env['DATABASE_HOST'],
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
         'PORT': '',
     }
 }
@@ -250,22 +254,22 @@ STATIC_ROOT =os.path.join(BASE_DIR, 'client','build', 'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = env['EMAIL_HOST']
+EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_USE_TLS = True
-EMAIL_PORT = env['EMAIL_PORT']
-EMAIL_HOST_USER = env['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = env['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 
 #for authentication emails
-EMAIL_SERVER = env['EMAIL_HOST']
-EMAIL_ADDRESS = env['EMAIL_HOST_USER']
-EMAIL_PASSWORD = env['EMAIL_HOST_PASSWORD']
+EMAIL_SERVER = env('EMAIL_HOST')
+EMAIL_ADDRESS = env('EMAIL_HOST_USER')
+EMAIL_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_MAIL_SUBJECT = 'Confirm your email'
 EMAIL_MAIL_HTML ="verificationEmail.html"
 EMAIL_PAGE_TEMPLATE="verificationResponse.html"
 USER_VERIFICATION_HTML_TEMPLATE={'U_V': "verificationEmail.html",'P_R':"passwordReset.html"}
-EMAIL_USER_VERIFICATION_LINK = env['HOST_URL']+'/verify/'
+EMAIL_USER_VERIFICATION_LINK = env('HOST_URL')+'/verify/'
 EMAIL_MODEL_ADMIN = False # the default value is False
 
 django_heroku.settings(locals(),staticfiles=False,databases=False)
