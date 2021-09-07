@@ -13,6 +13,8 @@ class Command(BaseCommand):
         email=kwargs['email']
         user=User.objects.get(email=email)
         orgName=kwargs['org_name']
+        print(user)
+        print(org_name)
         if not user.is_superuser:
             raise Exception('not a super user')
         domainName=settings.BASE_DOMAIN
