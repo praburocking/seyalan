@@ -5,7 +5,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 1
     },
     {
@@ -13,7 +13,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp2.jpg",
       id: 2
     },
     {
@@ -21,7 +21,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 3
     },
     {
@@ -29,7 +29,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp2.jpg",
       id: 4
     },
     {
@@ -37,7 +37,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 5
     },
     {
@@ -45,7 +45,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 6
     },
     {
@@ -53,7 +53,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "New feature",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 7
     },
     {
@@ -61,7 +61,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp2.jpg",
       id: 8
     }
   ],
@@ -71,7 +71,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 9
     },
     {
@@ -79,7 +79,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp3.jpg",
       id: 10
     },
     {
@@ -87,7 +87,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 11
     },
     {
@@ -95,7 +95,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 12
     },
     {
@@ -103,7 +103,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 13
     },
     {
@@ -111,7 +111,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp2.jpg",
       id: 14
     },
     {
@@ -119,7 +119,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "New feature",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp2.jpg",
       id: 15
     },
     {
@@ -127,7 +127,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp2.jpg",
       id: 16
     }
   ],
@@ -137,7 +137,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp2.jpg",
       id: 17
     },
     {
@@ -145,7 +145,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp2.jpg",
       id: 18
     },
     {
@@ -153,7 +153,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 19
     },
     {
@@ -161,7 +161,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 20
     },
     {
@@ -169,7 +169,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 21
     }
   ],
@@ -179,7 +179,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 22
     },
     {
@@ -187,7 +187,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 23
     },
     {
@@ -195,7 +195,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 24
     },
     {
@@ -203,7 +203,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 25
     },
     {
@@ -211,7 +211,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "New feature",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 26
     },
     {
@@ -219,7 +219,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 27
     }
   ],
@@ -229,7 +229,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 28
     },
     {
@@ -237,7 +237,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 29
     },
     {
@@ -245,7 +245,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 30
     },
     {
@@ -253,7 +253,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 31
     },
     {
@@ -261,7 +261,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 32
     },
     {
@@ -269,7 +269,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 33
     },
     {
@@ -277,7 +277,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "New feature",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 34
     },
     {
@@ -285,7 +285,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 35
     }
   ],
@@ -295,7 +295,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 36
     },
     {
@@ -303,7 +303,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 37
     },
     {
@@ -311,7 +311,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 38
     },
     {
@@ -319,7 +319,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 39
     },
     {
@@ -327,7 +327,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 40
     },
     {
@@ -335,7 +335,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 41
     },
     {
@@ -343,7 +343,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "New feature",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 42
     },
     {
@@ -351,7 +351,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 43
     }
   ],
@@ -361,7 +361,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 44
     },
     {
@@ -369,7 +369,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 45
     },
     {
@@ -377,7 +377,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 46
     },
     {
@@ -385,7 +385,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "blue",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 47
     },
     {
@@ -393,7 +393,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 48
     },
     {
@@ -401,7 +401,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 49
     },
     {
@@ -409,7 +409,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "New feature",
       badgeColor: "red",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 50
     },
     {
@@ -417,7 +417,7 @@ export const kanbanData = {
       date: "May 10",
       badge: "Feature Request",
       badgeColor: "green",
-      userImage: "assets/images/pp1.jpg",
+      userImage: "static/assets/images/pp1.jpg",
       id: 51
     }
   ]

@@ -67,7 +67,7 @@ props.history.push('/settings')
               <button className="focus:outline-none mx-2">
                 <img
                   className="rounded-full w-9 h-9 object-cover outline-none"
-                  src="assets/images/pp1.jpg"
+                  src="static/assets/images/pp1.jpg"
                 />
               </button>
             </div>

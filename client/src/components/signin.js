@@ -52,7 +52,7 @@ const Signin = () => {
       setAthuData(response.data.authtoken);
       setOrgData(response.data.org);
       setCookie("domain",response.data.org.domain,1);
-      window.location="http://"+response.data.org.domain+":3000"
+      window.location="http://"+response.data.org.domain+window.isProdEnv?"":process.env.REACT_APP_CLIENT_PORT
 
     }
     else{

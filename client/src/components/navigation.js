@@ -47,7 +47,7 @@ const Navigation = (props) => {
         <div className="flex flex-col w-64 bg-gray-100 px-5 h-screen">
           <div className=" py-5">
             <img
-              src="assets/images/logo2-removebg-preview.png"
+              src="static/assets/images/logo2-removebg-preview.png"
               className="w-15 h-20"
             />
           </div>
